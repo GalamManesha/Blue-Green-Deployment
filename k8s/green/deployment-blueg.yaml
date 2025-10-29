@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: activate-blue
+  namespace: blue
+  labels:
+    app: activate
+    version: blue
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: activate
+      version: blue
+  template:
+    metadata:
+      labels:
+        app: activate
+        version: blue
+    spec:
+      containers:
+      - name: activate
+        image: manesha689/activate:1.0.0
+        ports:
+        - containerPort: 8080
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
